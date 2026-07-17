@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trustvibe - Independent Product Reviews & Comparisons</title>
+    <style>
+        /* Reset & Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background-color: #f7fafc;
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2b6cb0;
+        }
+        .logo span {
+            color: #dd6b20;
+        }
+        .nav-menu a {
+            margin-left: 24px;
+            font-weight: 500;
+            color: #4a5568;
+            transition: color 0.2s;
+        }
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #2b6cb0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a365d 0%, #2a4365 100%);
+            color: #ffffff;
+            padding: 70px 20px;
+            text-align: center;
+        }
+        .hero-container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .hero p {
+            font-size: 17px;
+            opacity: 0.85;
+            margin-bottom: 30px;
+        }
+        .search-bar {
+            max-width: 550px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 5px;
+            border-radius: 30px;
+            display: flex;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .search-bar input {
+            flex-grow: 1;
+            border: none;
+            padding: 12px 20px;
+            font-size: 15px;
+            outline: none;
+            border-radius: 30px;
+        }
+        .search-bar button {
+            background: #dd6b20;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .search-bar button:hover {
+            background: #c05621;
+        }
+
+        /* Main Content Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #1a202c;
+            border-left: 5px solid #2b6cb0;
+            padding-left: 12px;
+        }
+
+        /* Comparison Table Style */
+        .table-responsive {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow-x: auto;
+            margin-bottom: 50px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th {
+            background-color: #f7fafc;
+            color: #4a5568;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 2px solid #edf2f7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 24px 16px;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: middle;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .badge-top {
+            background-color: #dd6b20;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .prod-img {
+            width: 80px;
+            height: 80px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 80px;
+            font-size: 11px;
+            color: #718096;
+            font-weight: 600;
+        }
+        .prod-info {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 15px;
+            max-width: 220px;
+        }
+        .prod-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+        .prod-brand {
+            font-size: 13px;
+            color: #718096;
+        }
+        .rating-stars {
+            color: #ecc94b;
+            font-size: 16px;
+        }
+        .rating-val {
+            font-size: 14px;
+            color: #2d3748;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        .highlight-text {
+            color: #2f855a;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .btn-cta {
+            background-color: #e53e3e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-block;
+            text-align: center;
+            white-space: nowrap;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(229,62,62,0.2);
+        }
+        .btn-cta:hover {
+            background-color: #c53030;
+            transform: translateY(-1px);
+        }
+
+        /* Multi-Category Grid Layout */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .category-card {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 24px;
+        }
+        .cat-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .review-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #f7fafc;
+        }
+        .review-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .review-item-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: #2d3748;
+            margin-bottom: 6px;
+        }
+        .review-item-title:hover {
+            color: #2b6cb0;
+            cursor: pointer;
+        }
+        .review-item-desc {
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+        .review-meta {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+        .badge-score {
+            background: #ebf8ff;
+            color: #2b6cb0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* Editorial Transparency / FTC Disclosure Box (CRUCIAL FOR GOOGLE ADS INT) */
+        .disclosure-box {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+            font-size: 14px;
+            color: #2c5282;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a202c;
+            color: #a0aec0;
+            padding: 50px 20px 30px 20px;
+            font-size: 14px;
+            border-top: 4px solid #2b6cb0;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .footer-col p, .footer-col a {
+            line-height: 1.8;
+            color: #cbd5e0;
+        }
+        .footer-col a:hover {
+            color: #ffffff;
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding-top: 25px;
+            border-top: 1px solid #2d3748;
+            text-align: center;
+            font-size: 12px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">Trust<span>vibe</span></div>
+            <div class="nav-menu">
+                <a href="#" class="active">Home</a>
+                <a href="#tech">Tech</a>
+                <a href="#beauty">Beauty</a>
+                <a href="#home">Home Gear</a>
+                <a href="#disclosure">About Us</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1>Honest Reviews. Smarter Choices.</h1>
+            <p>We test and analyze thousands of tech gadgets, skincare formulas, and home essentials so you can buy with absolute confidence.</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search product reviews, brands, buying guides...">
+                <button type="button">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+
+        <!-- FTC & Advertising Disclosure Box (Helps bypass Google Ads policy restrictions) -->
+        <div class="disclosure-box" id="disclosure">
+            <strong>Advertising Disclosure:</strong> Trustvibe is an independent review hub. When you purchase through links on our site, we may earn an affiliate commission from partners like Amazon. This supports our research but never influences our editorial ratings.
+        </div>
+
+        <!-- SECTION 1: TOP PICK COMPARISON TABLE -->
+        <h2 class="section-title">Editor's Top Choices This Week</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 35%;">Product & Rating</th>
+                        <th style="width: 20%;">Score</th>
+                        <th style="width: 25%;">Key Highlights</th>
+                        <th style="width: 20%; text-align: center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Product 1 -->
+                    <tr>
+                        <td>
+                            <div class="prod-img">IMAGE</div>
+                            <div class="prod-info">
+                                <span class="badge-top">BEST OVERALL</span>
+                                <div class="prod-name">AeroVac Smart Robot X1</div>
+                                <div class="prod-brand">By TechLife Global</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="rating-stars">★★★★★ <span class="rating-val">4.9 / 5</span></div>
+                            <div style="font-size: 12px; color: #718096; margin-top: 2px;">(1.2k+ Verified Reviews)</div>
+                        </td>
+                        <td>
+                            <div class="highlight-text">✓ Powerful 5000Pa Hyper-Suction</div>
+                            <div class="highlight-text">✓ Self-Emptying & Auto-Mop Drying</div>
+                            <div class="highlight-text">✓ Advanced AI Obstacle Avoidance</div>
+                        </td>
+                        <td style="text-align: center;">
+                            <!-- Call to Action button optimized for Google Ads conversion tracking -->
+                            <a href="https://your-affiliate-link.com" class="btn-cta" target="_blank">Check Live Price</a>
+                        </td>
+                    </tr>
+                    <!-- Product 2 -->
+                    <tr>
+                        <td>
+                            <div class="prod-img">IMAGE</div>
+                            <div class="prod-info">
+                                <span class="badge-top" style="background-color: #2b6cb0;">BEST VALUE</span>
+                                <div class="prod-name">GlowHydra B5 Advanced Serum</div>
+                                <div class="prod-brand">By DermaCare Labs</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="rating-stars">★★★★☆ <span class="rating-val">4.7 / 5</span></div>
+                            <div style="font-size: 12px; color: #718096; margin-top: 2px;">(850+ User Ratings)</div>
+                        </td>
+                        <td>
+                            <div class="highlight-text">✓ Intense 72-Hour Skin Hydration</div>
+                            <div class="highlight-text">✓ Calms Redness & Repairs Barrier</div>
+                            <div class="highlight-text">✓ Ultra-lightweight, Non-greasy</div>
+                        </td>
+                        <td style="text-align: center;">
+                            <a href="https://your-affiliate-link.com" class="btn-cta" style="background-color: #dd6b20;" target="_blank">View On Amazon</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECTION 2: MULTI-CATEGORY GRID -->
+        <h2 class="section-title">Explore Categories</h2>
+        
+        <div class="category-grid">
+            <!-- Tech Hub -->
+            <div class="category-card" id="tech">
+                <div class="cat-header">
+                    <span>💻 Tech & Gadgets</span>
+                    <a href="#" style="font-size: 13px; color: #2b6cb0;">View All</a>
+                </div>
+                <div class="review-item">
+                    <div class="review-item-title">SoundMax Pro Wireless Earbuds Review <span class="badge-score">9.4</span></div>
+                    <div class="review-item-desc">Premium active noise cancellation that rivals the big brands at half the price tag...</div>
+                    <div class="review-meta">By David K. • 2 days ago</div>
+                </div>
+                <div class="review-item">
+                    <div class="review-item-title">Top 5 Mechanical Keyboards for Coding 2026 <span class="badge-score">8.9</span></div>
+                    <div class="review-item-desc">The ultimate ergonomics matchup for software engineers and office professionals...</div>
+                    <div class="review-meta">By TechTeam • 1 week ago</div>
+                </div>
+            </div>
+
+            <!-- Beauty & Wellness -->
+            <div class="category-card" id="beauty">
+                <div class="cat-header">
+                    <span>✨ Beauty & Skincare</span>
+                    <a href="#" style="font-size: 13px; color: #2b6cb0;">View All</a>
+                </div>
+                <div class="review-item">
+                    <div class="review-item-title">Is UltraShield Mineral Sunscreen Worth It? <span class="badge-score">9.2</span></div>
+                    <div class="review-item-desc">Putting oil-control and white-cast claims to the test under extreme heat...</div>
+                    <div class="review-meta">By Sarah Jenkins • 24h ago</div>
+                </div>
+                <div class="review-item">
+                    <div class="review-item-title">Naturals Lip Vegan Matte Lipstick Review <span class="badge-score">8.6</span></div>
+                    <div class="review-item-desc">A deep dive into shades, smudge resistance, and all-day hydration comfort...</div>
+                    <div class="review-meta">By Olivia M. • 4 days ago</div>
+                </div>
+            </div>
+
+            <!-- Smart Home Gear -->
+            <div class="category-card" id="home">
+                <div class="cat-header">
+                    <span>🏠 Smart Home & Kitchen</span>
+                    <a href="#" style="font-size: 13px; color: #2b6cb0;">View All</a>
+                </div>
+                <div class="review-item">
+                    <div class="review-item-title">EcoCook Smart Air Fryer Deep Dive <span class="badge-score">9.1</span></div>
+                    <div class="review-item-desc">8-quart capacity meets advanced dual-cyclone convection heating technology...</div>
+                    <div class="review-meta">By The Culinary Lab • 3 days ago</div>
+                </div>
+                <div class="review-item">
+                    <div class="review-item-title">Is a Mini Masticating Juicer Practical? <span class="badge-score">8.2</span></div>
+                    <div class="review-item-desc">Evaluating space savings against prep time for standard daily green juices...</div>
+                    <div class="review-meta">By DailyGreens • 2 weeks ago</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Area (Includes absolute strict policy compliance layouts) -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>About Trustvibe</h4>
+                <p>Trustvibe provides unbiased, rigorous product comparisons and editorial analysis. Our testing procedures ensure consumer transparency and objective insights for global markets.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Legal & Policies</h4>
+                <p>
+                    <a href="#">Privacy Policy</a><br>
+                    <a href="#">Terms of Service</a><br>
+                    <a href="#">Contact Us</a>
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Disclaimer</h4>
+                <p>Product names, logos, and brands are property of their respective owners. Performance stats mentioned are based on specific testing scenarios and real-world results may vary.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Trustvibe Hub. All rights reserved. Optimized for Global Advertising Platforms.
+        </div>
+    </footer>
+
+</body>
+</html>
